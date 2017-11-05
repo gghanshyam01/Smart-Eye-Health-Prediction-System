@@ -1,0 +1,70 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 2, 2017, 12:12:39 PM
+    Author     : GHANSHYAM
+*/
+
+*{
+    font-family: 'Kanit', sans-serif !important;
+}
+
+.centerIt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("../img/homepage.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.mdl-card__actions {
+    padding: 10px;
+}
+
+.loginCard, .registerCard {
+    border-radius: 5px;
+    border-width: 20px;
+    box-shadow: 0 0 10px black;
+}
+
+.line {
+    margin: 0 20px;
+    border-bottom:1px solid #009688; 
+}
+
+.loginBtn, #toRegister, .registerBtn, .backToLoginBtn {
+    margin: 10px 7px;
+    width: 95%;
+}
+
+.hideMe {
+    display: none;
+}
+
+.alert {
+    padding: 10px;
+    margin: 0px;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+}
+
+.alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+}
