@@ -42,7 +42,7 @@
                 <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
                     <a href="#diagnose" class="mdl-layout__tab is-active">Diagnose</a>
                     <a href="#feedback" class="mdl-layout__tab moveDown">Add Feedback</a>
-                    <a href="#diagnoseHistory" class="mdl-layout__tab moveDown">My Diagnose History</a>
+                    <a href="#diagnoseHistory" class="mdl-layout__tab moveDown" onclick="getDiagnoseHistory()">My Diagnose History</a>
 
                 </div>
             </header>
@@ -65,7 +65,7 @@
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
                                 <a href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="getPrediction()">
-                                    Next
+                                    Predict
                                 </a>
                             </div>
                         </div>
@@ -109,22 +109,8 @@
                                     <th scope="col">Predicted Disease</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td colspan="2">Larry the Bird</td>
-                                </tr>
+                            <tbody id ="tableData">
+                            
                             </tbody>
                         </table>
                     </div>

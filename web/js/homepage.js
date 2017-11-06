@@ -12,7 +12,7 @@ function getPrediction() {
     {
         var predictionPlace = document.getElementById("prediction");
         if (this.readyState === 4 && this.status === 200) {
-            predictionPlace.innerHTML = "<h6>Predicted Disease: " + this.responseText + "</h6>" + "for " + symptom;
+            predictionPlace.innerHTML = "<h6>" + this.responseText + "</h6>";
         } else {
             predictionPlace.innerHTML = "Predicting...";
         }
@@ -22,20 +22,23 @@ function getPrediction() {
 }
 
 function sendFeedback() {
+
+}
+
+function getDiagnoseHistory() {
     var xmlhttp = new XMLHttpRequest();
-    var symptom = document.getElementById('symp1').value;
     xmlhttp.onreadystatechange = function ()
     {
-        var predictionPlace = document.getElementById("prediction");
+        var predictionPlace = document.getElementById("tableData");
         if (this.readyState === 4 && this.status === 200) {
-            predictionPlace.innerHTML = "<h6>Predicted Disease: " + this.responseText + "</h6>" + "for " + symptom;
+            predictionPlace.innerHTML = this.responseText;
         } else {
-            predictionPlace.innerHTML = "Predicting...";
         }
     };
-    xmlhttp.open("POST", "Predictor?symptom1=" + symptom, true);
+    xmlhttp.open("POST", "Predictor?getData=" + "yes", true);
     xmlhttp.send();
 }
+
 $(document).ready(function () {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function ()

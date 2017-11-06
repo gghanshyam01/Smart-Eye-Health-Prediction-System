@@ -5,8 +5,13 @@
  */
 package Controller;
 
+import databaseConnectivity.DbConnect;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -36,8 +41,42 @@ public class Predictor extends HttpServlet {
         response.setContentType("text/plain;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             try {
-                System.out.println(request.getParameter("symptom1"));
-                out.println(HealthPrediction.getPredictedDisease(request.getParameter("symptom1")));
+                if (null == LoginController.session.getAttribute("user")) {
+                    throw new NullPointerException("Session Expired, Login again to continue.");
+                } else {
+                    if (null != request.getParameter("getData")) {
+                        String query = "select EnteredSymptom, PredictedDisease from diagnosehistory where Username = '" + (String) LoginController.session.getAttribute("user") + "'";
+                        ResultSet rs = DbConnect.selectQuery(query);
+                        int count = 1;
+                        if (rs.next()) {
+                            StringBuilder value = new StringBuilder();
+                            do {
+                                value.append("<tr>\n" + "<th scope=\"row\">")
+                                        .append(count++).append("</th>\n" + "<td>")
+                                        .append(rs.getString("EnteredSymptom")).append("</td>\n" + "<td>")
+                                        .append(rs.getString("PredictedDisease")).append("</td>\n"
+                                                + "</tr>");
+                            } while (rs.next());
+                            DbConnect.closeConnection(rs);
+                            out.println(value.toString());
+                        }
+                    } else {
+                        String symptom = request.getParameter("symptom1");
+                        if (symptom.length() == 0) {
+                            throw new Exception("Please select a symptom to continue");
+                        }
+                        String predictedDisease = HealthPrediction.getPredictedDisease(symptom);
+                        out.println("Predicted Disease: " + predictedDisease);
+                        List<String> diagnoseResult = new ArrayList<>();
+
+                        diagnoseResult.add((String) LoginController.session.getAttribute("user"));
+                        diagnoseResult.add(symptom);
+                        diagnoseResult.add(predictedDisease);
+                        String query = "insert into diagnosehistory values (?, ?, ?)";
+                        DbConnect.insertViaPreparedStatement(query, diagnoseResult, false);
+                        DbConnect.closeConnection(null);
+                    }
+                }
             } catch (Exception ex) {
                 out.println(ex.toString());
             }
