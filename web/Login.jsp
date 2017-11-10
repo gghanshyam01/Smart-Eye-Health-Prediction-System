@@ -16,7 +16,6 @@ Author     : GHANSHYAM
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/login.js"></script>
     <link href="./css/login.css" rel ="stylesheet" type ="text/css">
-    
 </head>
 
 <body>

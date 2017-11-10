@@ -4,6 +4,37 @@
  * and open the template in the editor.
  */
 
+$(document).ready(function () {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function ()
+    {
+        if (this.readyState === 4 && this.status === 200) {
+
+            document.getElementById("tblUserBody").innerHTML = this.responseText;
+            $('#tblUser').DataTable();
+        } else {
+            //document.getElementById("val").innerHTML = "LOADING...";
+        }
+    };
+    xmlhttp.open("GET", "GetData?allusers=" + "yes", true);
+    xmlhttp.send();
+});
+
+function viewUsers() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function ()
+    {
+        if (this.readyState === 4 && this.status === 200) {
+
+            document.getElementById("tblUserBody").innerHTML = this.responseText;
+            $('#tblUser').DataTable();
+        } else {
+            //document.getElementById("val").innerHTML = "LOADING...";
+        }
+    };
+    xmlhttp.open("GET", "GetData?allusers=" + "yes", true);
+    xmlhttp.send();
+}
 
 function getPrediction() {
     var xmlhttp = new XMLHttpRequest();
@@ -21,40 +52,21 @@ function getPrediction() {
     xmlhttp.send();
 }
 
-function sendFeedback() {
+function viewFeedback() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function ()
     {
-        var feedbackResponse = document.getElementById("feedbackResponse");
         if (this.readyState === 4 && this.status === 200) {
-            feedbackResponse.innerHTML = this.responseText;
+
+            document.getElementById("tblFeedbackBody").innerHTML = this.responseText;
+            $('#tblFeedback').DataTable();
         } else {
+            //document.getElementById("val").innerHTML = "LOADING...";
         }
     };
-    xmlhttp.open("POST", "Predictor?feedback=" + document.getElementById("feedbk").value + "&email=" + document.getElementById('eid').value, true);
+    xmlhttp.open("GET", "GetData?feedback=" + "yes", true);
     xmlhttp.send();
 }
-
-function getDiagnoseHistory() {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function ()
-    {
-        var diagnoseHistory = document.getElementById("tableData");
-        if (this.readyState === 4 && this.status === 200) {
-            diagnoseHistory.innerHTML = this.responseText;
-            $('.table').DataTable();
-        } else {
-        }
-    };
-    xmlhttp.open("POST", "Predictor?getData=" + "yes", true);
-    xmlhttp.send();
-}
-
-$('#hist').click(function() {
-    $('main').removeClass('centerIt');
-});
-
-
 
 $(document).ready(function () {
     var xmlhttp = new XMLHttpRequest();

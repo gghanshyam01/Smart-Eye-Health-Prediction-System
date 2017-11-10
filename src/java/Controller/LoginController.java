@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
-    static HttpSession session = null;
+    static public HttpSession session = null;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,6 +43,24 @@ public class LoginController extends HttpServlet {
                                                 "});";
             try {
                 String msg;
+                if (request.getParameter("logout") != null) { // For Logout
+                    if (request.getParameter((String)LoginController.session.getAttribute("user")) != null) 
+                        LoginController.session.removeAttribute("user");
+                    
+                    if (request.getParameter((String)LoginController.session.getAttribute("suser")) != null) 
+                        LoginController.session.removeAttribute("suser");
+                    
+                    
+                    LoginController.session.removeAttribute("moveToRegisterPage");
+                    //LoginCheck.session.invalidate();
+                    msg = "<div class=\"alert alert-success role=\"alert\">\n" +
+                                "<strong>Logout Successful ! </strong>" +
+                                "</div>"; 
+                    LoginController.session.setAttribute("status", msg);
+                    
+                    response.sendRedirect("Login.jsp");
+                    return;
+                }
                 if (request.getParameter("login") != null) { // For Login
                     
                     if (DbConnect.verifyUser(request.getParameter("lUser"), request.getParameter("lPass"))) {
@@ -50,8 +68,19 @@ public class LoginController extends HttpServlet {
                             session.removeAttribute("status");
                         if (null != session.getAttribute("moveToRegisterPage")) 
                             session.removeAttribute("moveToRegisterPage");
-                        session.setAttribute("user", request.getParameter("lUser"));
-                        response.sendRedirect("homescreen.jsp");
+                        
+                        
+                        if (request.getParameter("lUser").equals("Admin")) {
+                            session.setAttribute("suser", request.getParameter("lUser"));
+                        } else {
+                            session.setAttribute("user", request.getParameter("lUser"));
+                        }
+                        
+                        if (request.getParameter("lUser").equals("Admin")) { 
+                            response.sendRedirect("Admin_homescreen.jsp");
+                        } else {
+                            response.sendRedirect("homescreen.jsp");
+                        }
                         return;
                     } else {
                         msg = "<div class=\"alert alert-danger role=\"alert\">\n" +
@@ -68,6 +97,9 @@ public class LoginController extends HttpServlet {
                                     + "Successful ! </strong>" +
                                             "  <a href=\"Login.jsp\" class=\"alert-link\">Click here</a> to login.\n" +
                                             "</div>";
+                        session.setAttribute("status", msg);
+                        response.sendRedirect("Login.jsp");
+                        return;
                     } else {
                         msg = "<div class=\"alert alert-danger role=\"alert\">\n" +
                                     "<strong>Registration Failed !</strong> Please try again.\n" +

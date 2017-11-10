@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.trees.J48;
 
 class Symp_Disease {
 
@@ -131,7 +132,7 @@ public class HealthPrediction extends HttpServlet {
 
             FilteredClassifier fc = new FilteredClassifier();
             fc.setFilter(stwv);
-            fc.setClassifier(new SMO());
+            fc.setClassifier(new J48());
             fc.buildClassifier(trainingData);
 
             double prediction = fc.classifyInstance(inst.instance(0));

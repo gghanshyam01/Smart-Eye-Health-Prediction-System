@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import static Controller.LoginController.session;
 import databaseConnectivity.DbConnect;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,10 +42,10 @@ public class Predictor extends HttpServlet {
         response.setContentType("text/plain;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             try {
-                if (null == LoginController.session.getAttribute("user")) {
+                if (null == LoginController.session.getAttribute("user") && null == LoginController.session.getAttribute("suser")) {
                     throw new NullPointerException("Session Expired, Login again to continue.");
                 } else {
-                    if (null != request.getParameter("getData")) {
+                    if (null != request.getParameter("getData")) { // for diagnose history
                         String query = "select EnteredSymptom, PredictedDisease from diagnosehistory where Username = '" + (String) LoginController.session.getAttribute("user") + "'";
                         ResultSet rs = DbConnect.selectQuery(query);
                         int count = 1;
@@ -60,7 +61,42 @@ public class Predictor extends HttpServlet {
                             DbConnect.closeConnection(rs);
                             out.println(value.toString());
                         }
-                    } else {
+                    } else if (null != request.getParameter("feedback")) { // add feedback into DB
+                        if (null == (String)LoginController.session.getAttribute("user")) { 
+                            String msg = "<div class=\"alert alert-danger role=\"alert\">\n" +
+                                "<strong>Session Expired !</strong> \n <a href=\"Login.jsp\" class=\"alert-link\">Click here</a> to login.\n" +
+                                "</div>";
+                            out.println(msg);
+                            return;
+                        } 
+                        String user = null;
+                        if (null != (String)LoginController.session.getAttribute("user"))
+                            user = (String)LoginController.session.getAttribute("user");
+                        else
+                            user = "Admin";
+                        String eID = request.getParameter("email");
+                        String feedback = request.getParameter("feedback");
+                        List<String> feedbackData = new ArrayList<>();
+                        feedbackData.add(user);
+                        feedbackData.add(eID);
+                        feedbackData.add(feedback);
+                        String query = "insert into feedbackdetails values(?, ?, ?)";
+                        if (DbConnect.insertViaPreparedStatement(query, feedbackData, false) == 1) {
+                            String msg = "<div class=\"alert alert-success\" role=\"alert\">\n" + "<strong>Feedback "
+                                    + "Sent ! </strong> Thank you for your response." +
+                                            "</div>";
+                            out.println(msg);
+                            return;
+                        } else {
+                            String msg = "<div class=\"alert alert-danger role=\"alert\">\n" +
+                                "<strong>Error receiving feedback !</strong> Please try after some time.\n" +
+                                "</div>";
+                            out.println(msg);
+                            return;
+                        }
+                        
+                        
+                    } else { // Disease Prediction
                         String symptom = request.getParameter("symptom1");
                         if (symptom.length() == 0) {
                             throw new Exception("Please select a symptom to continue");
@@ -68,8 +104,13 @@ public class Predictor extends HttpServlet {
                         String predictedDisease = HealthPrediction.getPredictedDisease(symptom);
                         out.println("Predicted Disease: " + predictedDisease);
                         List<String> diagnoseResult = new ArrayList<>();
-
-                        diagnoseResult.add((String) LoginController.session.getAttribute("user"));
+                        if (null != (String)LoginController.session.getAttribute("user")) {
+                            diagnoseResult.add((String) LoginController.session.getAttribute("user"));
+                        }
+                        else if (null != (String)LoginController.session.getAttribute("suser")) {
+                            diagnoseResult.add((String) LoginController.session.getAttribute("suser"));
+                        }
+                        
                         diagnoseResult.add(symptom);
                         diagnoseResult.add(predictedDisease);
                         String query = "insert into diagnosehistory values (?, ?, ?)";

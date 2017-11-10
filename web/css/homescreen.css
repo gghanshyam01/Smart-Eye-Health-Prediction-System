@@ -12,6 +12,39 @@ and open the template in the editor.
     font-family: 'Kanit', sans-serif !important;
 }
 
+.mdl-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.alert {
+    padding: 10px;
+    margin: 0px;
+    border: 1px solid;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+}
+
+.alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+}
+
+.container {
+    padding: 50px;
+}
+
 .centerIt {
     display: flex;
     justify-content: center;
@@ -19,10 +52,10 @@ and open the template in the editor.
 }
 
 .demo-card-wide.mdl-card {
-  width: 512px;
-  border-radius: 5px;
-  border-width: 20px;
-  box-shadow: 0 0 10px black;
+    width: 512px;
+    border-radius: 5px;
+    border-width: 20px;
+    box-shadow: 0 0 10px black;
 }
 
 #contactPage, .table {
