@@ -44,10 +44,10 @@ public class LoginController extends HttpServlet {
             try {
                 String msg;
                 if (request.getParameter("logout") != null) { // For Logout
-                    if (request.getParameter((String)LoginController.session.getAttribute("user")) != null) 
+                    if ((String)LoginController.session.getAttribute("user") != null) 
                         LoginController.session.removeAttribute("user");
                     
-                    if (request.getParameter((String)LoginController.session.getAttribute("suser")) != null) 
+                    if ((String)LoginController.session.getAttribute("suser") != null) 
                         LoginController.session.removeAttribute("suser");
                     
                     

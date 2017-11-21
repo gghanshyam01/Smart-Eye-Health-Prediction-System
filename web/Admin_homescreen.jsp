@@ -57,7 +57,7 @@
                 <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
                     <a href="#viewUsers" class="mdl-layout__tab is-active" onclick="viewUsers()">View Users</a>
                     <a href="#viewFeedback" class="mdl-layout__tab moveDown" onclick="viewFeedback()">View Feedback</a>
-                    <a href="#addDisease" id="hist" class="mdl-layout__tab moveDown">Add new disease</a>
+                    <a href="#addDisease" id="hist" class="mdl-layout__tab moveDown">Predict Admin Disease</a>
                 </div>
             </header>
             <main class="mdl-layout__content">
